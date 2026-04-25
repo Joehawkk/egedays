@@ -1,0 +1,231 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f5f1;
+  --surface: #ffffff;
+  --text: #202225;
+  --muted: #66707a;
+  --line: rgba(32, 34, 37, 0.11);
+  --shadow: 0 18px 48px rgba(40, 45, 52, 0.09);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--text);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  line-height: 1.5;
+  background: linear-gradient(180deg, #f8f8f4 0%, #eef1ec 100%);
+}
+
+.page-shell {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(12px, 3vw, 40px);
+}
+
+.intro {
+  margin-bottom: clamp(12px, 2vw, 18px);
+}
+
+.intro__content,
+.exam-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+}
+
+.intro__content {
+  display: flex;
+  min-height: clamp(132px, 28vw, 170px);
+  min-width: 0;
+  padding: clamp(22px, 4vw, 40px);
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 100%;
+  margin-bottom: 0;
+  font-size: clamp(2.2rem, 10vw, 4.8rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: 0;
+  overflow-wrap: break-word;
+}
+
+h1 span {
+  display: inline;
+}
+
+.exam-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(12px, 2vw, 18px);
+}
+
+.exam-card {
+  display: flex;
+  min-width: 0;
+  min-height: 178px;
+  padding: clamp(18px, 4vw, 30px);
+  flex-direction: column;
+  gap: clamp(22px, 4vw, 32px);
+}
+
+.exam-card.is-done {
+  opacity: 0.72;
+}
+
+.exam-card__top,
+.exam-card__top > div {
+  min-width: 0;
+}
+
+.exam-card__date {
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: clamp(0.82rem, 2.8vw, 0.94rem);
+  font-weight: 700;
+}
+
+.exam-card h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.25rem, 5.8vw, 1.55rem);
+  line-height: 1.14;
+  letter-spacing: 0;
+  overflow-wrap: break-word;
+}
+
+.countdown {
+  display: flex;
+  min-width: 0;
+  column-gap: clamp(4px, 1.5vw, 8px);
+  row-gap: 4px;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  color: #050607;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1rem, 5vw, 1.55rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.countdown__part {
+  white-space: nowrap;
+}
+
+@media (max-width: 559px) {
+  .intro__content {
+    min-height: 136px;
+    padding: 22px;
+  }
+
+  h1 {
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
+  }
+
+  h1 span {
+    display: block;
+  }
+
+  .exam-card {
+    min-height: 176px;
+  }
+
+  .exam-card h2 {
+    font-size: 1.25rem;
+  }
+
+  .countdown {
+    font-size: clamp(1rem, 5vw, 1.35rem);
+  }
+}
+
+@media (min-width: 560px) {
+  h1 {
+    font-size: clamp(3rem, 8vw, 4.8rem);
+  }
+
+  .countdown {
+    column-gap: 10px;
+    font-size: clamp(1.65rem, 5vw, 2.45rem);
+  }
+}
+
+@media (min-width: 760px) {
+  .exam-card {
+    min-height: 160px;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .exam-card__top {
+    flex: 0 1 300px;
+  }
+
+  .countdown {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    column-gap: 12px;
+    font-size: clamp(1.75rem, 3.4vw, 3rem);
+  }
+}
+
+@media (min-width: 1120px) {
+  .intro__content {
+    min-height: 160px;
+  }
+
+  .exam-card__top {
+    flex-basis: 340px;
+  }
+
+  .countdown {
+    column-gap: 16px;
+    font-size: clamp(2.7rem, 4vw, 3.55rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .page-shell {
+    padding: 10px;
+  }
+
+  .exam-card {
+    min-height: 168px;
+  }
+
+  .countdown {
+    font-size: 0.94rem;
+  }
+}

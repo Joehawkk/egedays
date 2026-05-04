@@ -3,68 +3,197 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f4f5f1" />
-    <title>До ЕГЭ 2026 осталось</title>
+    <meta name="theme-color" content="#0d0d18" />
+
+    <title>До ЕГЭ 2026 осталось — обратный отсчёт</title>
+    <meta name="description" content="Обратный отсчёт до ЕГЭ 2026: сколько дней осталось до русского языка, профильной математики и информатики. Таймер обновляется каждую секунду." />
+    <meta name="keywords" content="ЕГЭ 2026, сколько дней до ЕГЭ, обратный отсчёт ЕГЭ, ЕГЭ русский язык 2026, ЕГЭ математика 2026, ЕГЭ информатика 2026, таймер ЕГЭ, когда ЕГЭ 2026" />
+    <meta name="author" content="egedays" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://joehawkk.github.io/egedays/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://joehawkk.github.io/egedays/" />
+    <meta property="og:title" content="До ЕГЭ 2026 осталось — обратный отсчёт" />
+    <meta property="og:description" content="Таймер обратного отсчёта до ЕГЭ 2026: русский язык, профильная математика, информатика. Обновляется каждую секунду." />
+    <meta property="og:locale" content="ru_RU" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="До ЕГЭ 2026 осталось — обратный отсчёт" />
+    <meta name="twitter:description" content="Таймер обратного отсчёта до ЕГЭ 2026: русский язык, профильная математика, информатика." />
+
+    <!-- Yandex -->
+    <meta name="yandex" content="noarchive" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "До ЕГЭ 2026 осталось — обратный отсчёт",
+      "description": "Обратный отсчёт до ЕГЭ 2026: русский язык, профильная математика, информатика",
+      "url": "https://joehawkk.github.io/egedays/",
+      "inLanguage": "ru",
+      "mainEntity": [
+        {
+          "@type": "Event",
+          "name": "ЕГЭ по русскому языку 2026",
+          "startDate": "2026-06-04T10:00:00+03:00",
+          "location": { "@type": "Place", "name": "Россия" },
+          "description": "Единый государственный экзамен по русскому языку 2026 года"
+        },
+        {
+          "@type": "Event",
+          "name": "ЕГЭ по профильной математике 2026",
+          "startDate": "2026-06-08T10:00:00+03:00",
+          "location": { "@type": "Place", "name": "Россия" },
+          "description": "Единый государственный экзамен по профильной математике 2026 года"
+        },
+        {
+          "@type": "Event",
+          "name": "ЕГЭ по информатике 2026",
+          "startDate": "2026-06-18T10:00:00+03:00",
+          "location": { "@type": "Place", "name": "Россия" },
+          "description": "Единый государственный экзамен по информатике (КЕГЭ) 2026 года"
+        }
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="bg-blobs" aria-hidden="true">
+      <div class="blob blob--1"></div>
+      <div class="blob blob--2"></div>
+      <div class="blob blob--3"></div>
+    </div>
+
     <main class="page-shell">
-      <section class="intro" aria-labelledby="page-title">
-        <div class="intro__content">
-          <h1 id="page-title">
-            <span>До ЕГЭ 2026</span>
-            <span>осталось</span>
-          </h1>
-        </div>
+      <section class="intro">
+        <p class="intro__eyebrow">Обратный отсчёт</p>
+        <h1>До ЕГЭ 2026<br />осталось</h1>
       </section>
 
       <section class="exam-grid" aria-label="Счетчики до ЕГЭ">
-        <article class="exam-card" data-exam-card>
-          <div class="exam-card__top">
-            <div>
-              <p class="exam-card__date">4 июня, 10:00</p>
+
+        <article class="exam-card exam-card--ru" data-exam-card>
+          <div class="exam-card__header">
+            <div class="exam-card__accent"></div>
+            <div class="exam-card__badge">§</div>
+            <div class="exam-card__meta">
+              <p class="exam-card__date">4 июня · 10:00</p>
               <h2>Русский язык</h2>
             </div>
           </div>
           <div class="countdown" data-target="2026-06-04T10:00:00+03:00">
-            <span class="countdown__part"><span data-unit="days">0</span> дн.</span>
-            <span class="countdown__part"><span data-unit="hours">0</span> ч.</span>
-            <span class="countdown__part"><span data-unit="minutes">0</span> мин.</span>
-            <span class="countdown__part"><span data-unit="seconds">0</span> сек.</span>
+            <div class="countdown__block">
+              <span data-unit="days">0</span>
+              <span class="countdown__label">дней</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="hours">0</span>
+              <span class="countdown__label">часов</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="minutes">0</span>
+              <span class="countdown__label">минут</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="seconds" class="seconds">0</span>
+              <span class="countdown__label">секунд</span>
+            </div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-bar__fill" data-progress></div></div>
+            <span class="progress-label" data-progress-label></span>
           </div>
         </article>
 
-        <article class="exam-card" data-exam-card>
-          <div class="exam-card__top">
-            <div>
-              <p class="exam-card__date">8 июня, 10:00</p>
+        <article class="exam-card exam-card--math" data-exam-card>
+          <div class="exam-card__header">
+            <div class="exam-card__accent"></div>
+            <div class="exam-card__badge">∑</div>
+            <div class="exam-card__meta">
+              <p class="exam-card__date">8 июня · 10:00</p>
               <h2>Профильная математика</h2>
             </div>
           </div>
           <div class="countdown" data-target="2026-06-08T10:00:00+03:00">
-            <span class="countdown__part"><span data-unit="days">0</span> дн.</span>
-            <span class="countdown__part"><span data-unit="hours">0</span> ч.</span>
-            <span class="countdown__part"><span data-unit="minutes">0</span> мин.</span>
-            <span class="countdown__part"><span data-unit="seconds">0</span> сек.</span>
+            <div class="countdown__block">
+              <span data-unit="days">0</span>
+              <span class="countdown__label">дней</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="hours">0</span>
+              <span class="countdown__label">часов</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="minutes">0</span>
+              <span class="countdown__label">минут</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="seconds" class="seconds">0</span>
+              <span class="countdown__label">секунд</span>
+            </div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-bar__fill" data-progress></div></div>
+            <span class="progress-label" data-progress-label></span>
           </div>
         </article>
 
-        <article class="exam-card" data-exam-card>
-          <div class="exam-card__top">
-            <div>
-              <p class="exam-card__date">18 июня, 10:00</p>
+        <article class="exam-card exam-card--cs" data-exam-card>
+          <div class="exam-card__header">
+            <div class="exam-card__accent"></div>
+            <div class="exam-card__badge">&lt;/&gt;</div>
+            <div class="exam-card__meta">
+              <p class="exam-card__date">18 июня · 10:00</p>
               <h2>Информатика</h2>
             </div>
           </div>
           <div class="countdown" data-target="2026-06-18T10:00:00+03:00">
-            <span class="countdown__part"><span data-unit="days">0</span> дн.</span>
-            <span class="countdown__part"><span data-unit="hours">0</span> ч.</span>
-            <span class="countdown__part"><span data-unit="minutes">0</span> мин.</span>
-            <span class="countdown__part"><span data-unit="seconds">0</span> сек.</span>
+            <div class="countdown__block">
+              <span data-unit="days">0</span>
+              <span class="countdown__label">дней</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="hours">0</span>
+              <span class="countdown__label">часов</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="minutes">0</span>
+              <span class="countdown__label">минут</span>
+            </div>
+            <span class="countdown__sep">:</span>
+            <div class="countdown__block">
+              <span data-unit="seconds" class="seconds">0</span>
+              <span class="countdown__label">секунд</span>
+            </div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-bar__fill" data-progress></div></div>
+            <span class="progress-label" data-progress-label></span>
           </div>
         </article>
+
       </section>
     </main>
+
     <script src="script.js"></script>
   </body>
 </html>

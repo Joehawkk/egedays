@@ -7,6 +7,7 @@
   --ru: #ff6b8a;
   --math: #4fc3f7;
   --cs: #69f0ae;
+  --phys: #ffb74d;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,7 +23,7 @@ body {
   line-height: 1.5;
 }
 
-/* ── noise ── */
+/* -- noise -- */
 .noise {
   position: fixed;
   inset: 0;
@@ -34,14 +35,14 @@ body {
   background-size: 180px;
 }
 
-/* ── scrollbar ── */
+/* -- scrollbar -- */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 100px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
 * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
 
-/* ── blobs ── */
+/* -- blobs -- */
 .bg-blobs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 
 .blob {
@@ -62,7 +63,7 @@ body {
   66%       { transform: translate(-16px, 11px) scale(0.96); }
 }
 
-/* ── layout ── */
+/* -- layout -- */
 .page-shell {
   position: relative;
   z-index: 2;
@@ -72,7 +73,7 @@ body {
   padding: clamp(24px, 6vw, 72px) clamp(16px, 5vw, 40px) clamp(40px, 8vw, 96px);
 }
 
-/* ── intro ── */
+/* -- intro -- */
 .intro { margin-bottom: clamp(20px, 4vw, 48px); }
 
 .intro__eyebrow {
@@ -95,10 +96,10 @@ h1 {
   background-clip: text;
 }
 
-/* ── grid ── */
+/* -- grid -- */
 .exam-grid { display: flex; flex-direction: column; gap: clamp(10px, 2vw, 14px); }
 
-/* ── card ── */
+/* -- card -- */
 .exam-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -116,17 +117,19 @@ h1 {
   .exam-card--ru:hover   { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(255,107,138,0.15); border-color: rgba(255,107,138,0.25); }
   .exam-card--math:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(79,195,247,0.15);  border-color: rgba(79,195,247,0.25); }
   .exam-card--cs:hover   { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(105,240,174,0.15); border-color: rgba(105,240,174,0.25); }
+  .exam-card--phys:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(255,183,77,0.15);  border-color: rgba(255,183,77,0.25); }
 }
 
 .exam-card.is-done { opacity: 0.4; filter: grayscale(0.4); }
 
-/* ── card header ── */
+/* -- card header -- */
 .exam-card__header { display: flex; align-items: center; gap: 14px; }
 
 .exam-card__accent { width: 3px; min-height: 42px; border-radius: 3px; flex-shrink: 0; }
 .exam-card--ru   .exam-card__accent { background: linear-gradient(180deg, var(--ru), transparent); }
 .exam-card--math .exam-card__accent { background: linear-gradient(180deg, var(--math), transparent); }
 .exam-card--cs   .exam-card__accent { background: linear-gradient(180deg, var(--cs), transparent); }
+.exam-card--phys .exam-card__accent { background: linear-gradient(180deg, var(--phys), transparent); }
 
 .exam-card__badge {
   width: 44px;
@@ -145,7 +148,8 @@ h1 {
 
 .exam-card--ru   .exam-card__badge { color: var(--ru);   background: rgba(255,107,138,0.1);  border-color: rgba(255,107,138,0.2); }
 .exam-card--math .exam-card__badge { color: var(--math); background: rgba(79,195,247,0.1);   border-color: rgba(79,195,247,0.2); }
-.exam-card--cs   .exam-card__badge { color: var(--cs);   background: rgba(105,240,174,0.1); border-color: rgba(105,240,174,0.2); font-size: 0.72rem; }
+.exam-card--cs   .exam-card__badge { color: var(--cs);   background: rgba(105,240,174,0.1); border-color: rgba(105,240,174,0.2); }
+.exam-card--phys .exam-card__badge { color: var(--phys); background: rgba(255,183,77,0.1);  border-color: rgba(255,183,77,0.2); }
 
 .exam-card__date {
   color: var(--muted);
@@ -163,7 +167,7 @@ h2 {
   line-height: 1.15;
 }
 
-/* ── countdown ── */
+/* -- countdown -- */
 .countdown {
   display: flex;
   align-items: flex-start;
@@ -184,6 +188,7 @@ h2 {
 .exam-card--ru   .countdown__block span[data-unit] { color: var(--ru); }
 .exam-card--math .countdown__block span[data-unit] { color: var(--math); }
 .exam-card--cs   .countdown__block span[data-unit] { color: var(--cs); }
+.exam-card--phys .countdown__block span[data-unit] { color: var(--phys); }
 
 @keyframes tick {
   0%   { transform: scale(1.18); opacity: 0.7; }
@@ -210,7 +215,7 @@ h2 {
   align-self: flex-start;
 }
 
-/* ── progress ── */
+/* -- progress -- */
 .progress-wrap {
   display: flex;
   align-items: center;
@@ -235,6 +240,7 @@ h2 {
 .exam-card--ru   .progress-bar__fill { background: linear-gradient(90deg, rgba(255,107,138,0.4), var(--ru)); }
 .exam-card--math .progress-bar__fill { background: linear-gradient(90deg, rgba(79,195,247,0.4), var(--math)); }
 .exam-card--cs   .progress-bar__fill { background: linear-gradient(90deg, rgba(105,240,174,0.4), var(--cs)); }
+.exam-card--phys .progress-bar__fill { background: linear-gradient(90deg, rgba(255,183,77,0.4), var(--phys)); }
 
 .progress-label {
   font-size: 0.65rem;
@@ -246,7 +252,7 @@ h2 {
   text-align: right;
 }
 
-/* ── tablet: horizontal card ── */
+/* -- tablet: horizontal card -- */
 @media (min-width: 600px) {
   .exam-card { flex-direction: row; align-items: center; flex-wrap: wrap; }
   .exam-card__header { flex: 0 0 auto; width: clamp(190px, 32%, 260px); }
@@ -254,7 +260,7 @@ h2 {
   .progress-wrap { flex: 0 0 100%; }
 }
 
-/* ── landscape mobile ── */
+/* -- landscape mobile -- */
 @media (max-height: 500px) and (orientation: landscape) {
   h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); }
   .intro { margin-bottom: 10px; }

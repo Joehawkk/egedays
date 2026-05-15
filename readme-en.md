@@ -6,13 +6,11 @@ Timer for all 2026 EGE exams. Updates every second.
 
 ## Features
 
-- All 13 EGE 2026 subjects
+- All EGE subjects
 - Subject filter - show only your exams
 - Timezone selector - from Kaliningrad to Kamchatka
-- Timer updates every second
 - Progress bar - shows how much time has passed since September 1
-- Motivational quote, changes every 15 minutes
-- Selection saved between sessions
+- Motivational quotes, change every 15 minutes
 - Responsive on all devices
 
 ## Exams

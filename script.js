@@ -35,12 +35,14 @@ const YEAR_START = new Date('2025-09-01T00:00:00+03:00').getTime();
 const second = 1000, minute = 60000, hour = 3600000, day = 86400000;
 const fmt = new Intl.NumberFormat('ru-RU');
 
-let selectedTz = parseInt(localStorage.getItem('ege-tz') ?? '3');
+let selectedTz       = parseInt(localStorage.getItem('ege-tz') ?? '3');
+let selectedSubjects = JSON.parse(localStorage.getItem('ege-subjects') ?? '["ru","math-prof","physics","cs"]');
 let activeExams = [];
 let tickInterval = null;
 
 function saveState() {
   localStorage.setItem('ege-tz', selectedTz);
+  localStorage.setItem('ege-subjects', JSON.stringify(selectedSubjects));
 }
 
 function pad(n) { return String(n).padStart(2, '0'); }
@@ -92,6 +94,26 @@ function renderTzSelect() {
   document.addEventListener('click', () => wrap.classList.remove('open'));
 }
 
+// ── Subject pills ──
+function renderPills() {
+  const container = document.getElementById('subject-pills');
+  container.innerHTML = EXAMS_DATA.map(e => {
+    const active = selectedSubjects.includes(e.id);
+    return `<button class="subject-pill${active ? ' active' : ''}" data-id="${e.id}" style="--pill-color:${e.color};--pill-rgb:${e.rgb}">${e.name}</button>`;
+  }).join('');
+  container.querySelectorAll('.subject-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id;
+      selectedSubjects = selectedSubjects.includes(id)
+        ? selectedSubjects.filter(s => s !== id)
+        : [...selectedSubjects, id];
+      btn.classList.toggle('active', selectedSubjects.includes(id));
+      saveState();
+      renderCards();
+    });
+  });
+}
+
 // ── Exam cards ──
 function initCards() {
   const now  = Date.now();
@@ -108,9 +130,11 @@ function initCards() {
     const sv = fmt.format(Math.floor((dist % minute) / second));
     const pct = Math.min(100, Math.max(0, (now - YEAR_START) / (targetTime - YEAR_START) * 100));
     const sm = e.badge.length > 1 ? ' exam-card__badge--sm' : '';
+    const hidden = !selectedSubjects.includes(e.id);
     return `
+    <div class="card-wrap${hidden ? ' card-wrap--hidden' : ''}">
     <article class="exam-card" data-exam-card data-exam-id="${e.id}"
-      style="--card-color:${e.color};--card-rgb:${e.rgb}">
+      style="--card-color:${e.color};--card-rgb:${e.rgb};--card-i:${e.id}">
       <div class="exam-card__header">
         <div class="exam-card__accent"></div>
         <div class="exam-card__badge${sm}">${e.badge}</div>
@@ -132,35 +156,89 @@ function initCards() {
         <div class="progress-bar"><div class="progress-bar__fill" data-progress style="width:${pct.toFixed(1)}%"></div></div>
         <span class="progress-label" data-progress-label>${pct.toFixed(0)}%</span>
       </div>
-    </article>`;
+    </article>
+    </div>`;
   }).join('');
 }
 
 function rebuildActiveExams() {
-  activeExams = [...document.querySelectorAll('[data-exam-card]')].map(card => {
-    const timer = card.querySelector('[data-target]');
-    return {
-      card,
-      targetTime:    new Date(timer.dataset.target).getTime(),
-      days:          timer.querySelector('[data-unit="days"]'),
-      hours:         timer.querySelector('[data-unit="hours"]'),
-      minutes:       timer.querySelector('[data-unit="minutes"]'),
-      seconds:       timer.querySelector('[data-unit="seconds"]'),
-      progressFill:  card.querySelector('[data-progress]'),
-      progressLabel: card.querySelector('[data-progress-label]'),
-    };
-  });
+  activeExams = [...document.querySelectorAll('[data-exam-card]')]
+    .filter(card => {
+      const wrap = card.parentElement;
+      return !wrap.classList.contains('card-wrap--hidden') && !wrap.dataset.hiding;
+    })
+    .map(card => {
+      const timer = card.querySelector('[data-target]');
+      return {
+        card,
+        targetTime:    new Date(timer.dataset.target).getTime(),
+        days:          timer.querySelector('[data-unit="days"]'),
+        hours:         timer.querySelector('[data-unit="hours"]'),
+        minutes:       timer.querySelector('[data-unit="minutes"]'),
+        seconds:       timer.querySelector('[data-unit="seconds"]'),
+        progressFill:  card.querySelector('[data-progress]'),
+        progressLabel: card.querySelector('[data-progress-label]'),
+      };
+    });
+}
+
+function showCard(wrap) {
+  wrap.classList.remove('card-wrap--hidden');
+  delete wrap.dataset.hiding;
+  wrap.style.cssText = '';
+}
+
+function hideCard(wrap) {
+  if (wrap.dataset.hiding) return;
+  wrap.dataset.hiding = '1';
+  wrap.style.pointerEvents = 'none';
+
+  // Phase 1: fade out
+  wrap.style.transition = 'opacity 0.18s ease';
+  wrap.style.opacity = '0';
+
+  setTimeout(() => {
+    // Phase 2: collapse height + margin
+    const h  = wrap.offsetHeight;
+    const mb = parseFloat(getComputedStyle(wrap).marginBottom) || 0;
+    wrap.style.overflow = 'hidden';
+    wrap.style.height = h + 'px';
+    wrap.style.marginBottom = mb + 'px';
+    wrap.style.transition = 'height 0.28s ease, margin-bottom 0.28s ease';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      wrap.style.height = '0';
+      wrap.style.marginBottom = '0';
+    }));
+
+    setTimeout(() => {
+      delete wrap.dataset.hiding;
+      wrap.style.cssText = '';
+      wrap.classList.add('card-wrap--hidden');
+      rebuildActiveExams();
+    }, 290);
+  }, 190);
 }
 
 function renderCards() {
-  // Update targets when timezone changes
+  document.querySelectorAll('[data-exam-card]').forEach(card => {
+    const wrap    = card.parentElement;
+    const visible = selectedSubjects.includes(card.dataset.examId);
+    const hidden  = wrap.classList.contains('card-wrap--hidden');
+    const hiding  = !!wrap.dataset.hiding;
+    if (visible && (hidden || hiding)) showCard(wrap);
+    else if (!visible && !hidden && !hiding) hideCard(wrap);
+  });
+
+  // Update targets if timezone changed
   EXAMS_DATA.forEach(e => {
     const card  = document.querySelector(`[data-exam-id="${e.id}"]`);
     if (!card) return;
     const timer = card.querySelector('[data-target]');
     if (timer) timer.dataset.target = makeTarget(e.date);
   });
+
   rebuildActiveExams();
+
   if (!tickInterval) {
     update();
     tickInterval = setInterval(update, 1000);
@@ -197,5 +275,6 @@ function update() {
 
 // ── Init ──
 renderTzSelect();
+renderPills();
 initCards();
 renderCards();

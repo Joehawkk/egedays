@@ -1,7 +1,7 @@
 'use strict';
 
 const EXAMS_DATA = [
-  { id: 'history',    name: 'История',             date: '2026-06-01', badge: '⏳',        color: '#ce93d8', rgb: '206,147,216' },
+  { id: 'history',    name: 'История',             date: '2026-06-01', badge: '⏳︎',       color: '#ce93d8', rgb: '206,147,216' },
   { id: 'literature', name: 'Литература',           date: '2026-06-01', badge: '§',         color: '#f48fb1', rgb: '244,143,177' },
   { id: 'chemistry',  name: 'Химия',                date: '2026-06-01', badge: '⚛',         color: '#80cbc4', rgb: '128,203,196' },
   { id: 'ru',         name: 'Русский язык',         date: '2026-06-04', badge: 'Ъ',         color: '#ff6b8a', rgb: '255,107,138' },
@@ -56,7 +56,7 @@ const second = 1000, minute = 60000, hour = 3600000, day = 86400000;
 const fmt = new Intl.NumberFormat('ru-RU');
 
 let selectedTz       = parseInt(localStorage.getItem('ege-tz') ?? '3');
-let selectedSubjects = JSON.parse(localStorage.getItem('ege-subjects') ?? '["ru","math-prof","physics","cs"]');
+let selectedSubjects = JSON.parse(localStorage.getItem('ege-subjects') ?? '["ru","math-prof","cs"]');
 let activeExams = [];
 let tickInterval = null;
 

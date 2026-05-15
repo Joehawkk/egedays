@@ -1,28 +1,35 @@
-# egedays – A site showing how much time is left until the 2026 Russian State Exam.
+# egedays - Countdown to the 2026 Russian State Exams
 
-Countdown to four 2026 Unified State Exams (EGE). Updates every second.
+Timer for all 2026 EGE exams. Updates every second.
 
 🔗 **[Open the site](https://joehawkk.github.io/egedays/)**
+
+## Features
+
+- All 13 EGE 2026 subjects
+- Subject filter - show only your exams
+- Timezone selector - from Kaliningrad to Kamchatka
+- Timer updates every second
+- Progress bar - shows how much time has passed since September 1
+- Motivational quote, changes every 15 minutes
+- Selection saved between sessions
+- Responsive on all devices
 
 ## Exams
 
 | Subject | Date |
 |---|---|
-| Russian Language | June 4, 10:00 |
-| Mathematics (advanced) | June 8, 10:00 |
-| Physics | June 11, 10:00 |
-| Computer Science | June 18, 10:00 |
-
-## Features
-
-- Timer updates every second
-- Progress bar – shows how much time has passed since September 1
-- Responsive on all devices
-- Clean dark UI with glassmorphism card effects
+| History, Literature, Chemistry | June 1 |
+| Russian Language | June 4 |
+| Mathematics (basic), Mathematics (advanced) | June 8 |
+| Social Studies, Physics | June 11 |
+| Biology, Geography, Foreign Languages (written) | June 15 |
+| Computer Science | June 18 |
+| Foreign Languages (oral) | June 19 |
 
 ## Stack
 
-Pure HTML, CSS, JavaScript – no dependencies or build tools.
+Pure HTML, CSS, JavaScript - no dependencies or build tools.
 
 ## Run locally
 

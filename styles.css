@@ -107,6 +107,7 @@ body {
   opacity: var(--blob-opacity);
   animation: float 16s ease-in-out infinite;
   transition: opacity 0.25s ease;
+  will-change: transform;
 }
 .blob--1 { width: 55vmax; height: 55vmax; background: #7c6fff; top: -18vmax; left: -14vmax; animation-delay: 0s; }
 .blob--2 { width: 42vmax; height: 42vmax; background: #ff6b8a; top: 38%; right: -12vmax; animation-delay: -5s; }

@@ -24,6 +24,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scrollbar-gutter: stable; overflow-anchor: none; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 body, * { user-select: none; -webkit-user-select: none; }
@@ -47,7 +48,7 @@ body {
 
 /* -- scrollbar -- */
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 100px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
 * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
@@ -67,11 +68,11 @@ body {
 /* -- layout -- */
 .page-shell {
   position: relative; z-index: 2; width: 100%; max-width: 900px; margin: 0 auto;
-  padding: clamp(24px, 6vw, 72px) clamp(16px, 5vw, 40px) clamp(40px, 8vw, 96px);
+  padding: clamp(16px,3dvh,72px) clamp(16px,5vw,40px) clamp(20px,4dvh,96px);
 }
 
 /* -- intro -- */
-.intro { margin-bottom: clamp(20px, 4vw, 48px); }
+.intro { margin-bottom: clamp(10px,2dvh,32px); }
 .intro__eyebrow {
   font-size: clamp(0.7rem,2vw,0.82rem); font-weight: 600; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--muted); margin-bottom: clamp(8px,1.5vw,14px);
@@ -279,7 +280,7 @@ h2 { font-size: clamp(1rem,3.2vw,1.3rem); font-weight: 700; letter-spacing: -0.0
 @media (max-height: 500px) and (orientation: landscape) {
   h1 { font-size: clamp(1.5rem,5vw,2.2rem); }
   .intro { margin-bottom: 10px; }
-  .exam-grid { gap: 8px; }
+  .card-wrap { margin-bottom: 8px; }
   .exam-card { padding: 12px 16px; gap: 10px; }
   .countdown__block span[data-unit] { font-size: clamp(1.4rem,5vw,2rem); }
   .progress-wrap { display: none; }

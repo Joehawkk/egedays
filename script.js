@@ -148,7 +148,7 @@ function renderPills() {
 function initCards() {
   const now  = Date.now();
   const grid = document.getElementById('exam-grid');
-  grid.innerHTML = EXAMS_DATA.map(e => {
+  grid.innerHTML = EXAMS_DATA.map((e, i) => {
     const [, m, d] = e.date.split('-');
     const dateLabel  = `${parseInt(d)} ${MONTHS[parseInt(m)]}`;
     const target     = makeTarget(e.date);
@@ -296,6 +296,25 @@ function setText(el, value) {
   }
 }
 
+function declension(n) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m100 >= 11 && m100 <= 19) return 'дней';
+  if (m10 === 1) return 'день';
+  if (m10 >= 2 && m10 <= 4) return 'дня';
+  return 'дней';
+}
+
+function updateMeta() {
+  if (!activeExams.length) return;
+  const now   = Date.now();
+  const parts = activeExams.map(e => {
+    const days = Math.floor(Math.max(0, e.targetTime - now) / day);
+    return e.card.querySelector('h2').textContent.trim() + ' — ' + days + ' ' + declension(days);
+  });
+  document.querySelector('meta[name="description"]')
+    ?.setAttribute('content', 'До ЕГЭ 2026: ' + parts.join(', ') + '.');
+}
+
 function update() {
   const now = Date.now();
   let anyExpired = false;
@@ -325,6 +344,7 @@ function update() {
     }
   });
   if (anyExpired) activeExams = activeExams.filter(e => !e.card.classList.contains('exam-card--expired'));
+  updateMeta();
 }
 
 // ── Init ──

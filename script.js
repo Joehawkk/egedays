@@ -362,6 +362,92 @@ function update() {
   updateMeta();
 }
 
+// ── Particles ──
+(function () {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:0';
+  document.querySelector('.bg-blobs').insertAdjacentElement('afterend', canvas);
+  const ctx = canvas.getContext('2d');
+  const N = 48;
+  const pts = [];
+
+  function resize() {
+    canvas.width  = innerWidth;
+    canvas.height = innerHeight;
+  }
+
+  for (let i = 0; i < N; i++) {
+    pts.push({
+      x:  Math.random() * innerWidth,
+      y:  Math.random() * innerHeight,
+      r:  0.8 + Math.random() * 1.8,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      a:  0.12 + Math.random() * 0.35,
+    });
+  }
+
+  function tick() {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    const rgb = document.documentElement.classList.contains('light')
+      ? '80,70,210' : '255,255,255';
+    for (const p of pts) {
+      p.x = (p.x + p.vx + w) % w;
+      p.y = (p.y + p.vy + h) % h;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rgb},${p.a})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  resize();
+  addEventListener('resize', resize);
+  requestAnimationFrame(tick);
+})();
+
+// ── Blob parallax ──
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const blobs = [
+    { el: document.querySelector('.blob--1'), f: 0.022 },
+    { el: document.querySelector('.blob--2'), f: 0.014 },
+    { el: document.querySelector('.blob--3'), f: 0.008 },
+  ];
+
+  let tx = 0, ty = 0, cx = 0, cy = 0, rafId = null;
+
+  function tick() {
+    cx += (tx - cx) * 0.05;
+    cy += (ty - cy) * 0.05;
+    blobs.forEach(b => {
+      b.el.style.translate = `${cx * innerWidth * b.f}px ${cy * innerHeight * b.f}px`;
+    });
+    rafId = (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001)
+      ? requestAnimationFrame(tick)
+      : null;
+  }
+
+  function wake() { if (!rafId) rafId = requestAnimationFrame(tick); }
+
+  document.addEventListener('mousemove', e => {
+    tx = (e.clientX / innerWidth  - 0.5) * 2;
+    ty = (e.clientY / innerHeight - 0.5) * 2;
+    wake();
+  });
+
+  if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', e => {
+      tx = Math.max(-1, Math.min(1, (e.gamma || 0) / 45));
+      ty = Math.max(-1, Math.min(1, (e.beta  || 0) / 45));
+      wake();
+    });
+  }
+})();
+
 // ── Theme toggle ──
 let isDark = localStorage.getItem('ege-theme') !== 'light';
 

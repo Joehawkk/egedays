@@ -134,8 +134,8 @@ function initCards() {
     const hidden = !selectedSubjects.includes(e.id);
     return `
     <div class="card-wrap${hidden ? ' card-wrap--hidden' : ''}">
-    <article class="exam-card" data-exam-card data-exam-id="${e.id}"
-      style="--card-color:${e.color};--card-rgb:${e.rgb};--card-i:${e.id}">
+    <article class="exam-card${isReload ? '' : ' exam-card--entering'}" data-exam-card data-exam-id="${e.id}"
+      style="--card-color:${e.color};--card-rgb:${e.rgb};--card-i:${i}">
       <div class="exam-card__header">
         <div class="exam-card__accent"></div>
         <div class="exam-card__badge${sm}">${e.badge}</div>
@@ -183,10 +183,14 @@ function rebuildActiveExams() {
     });
 }
 
-function showCard(wrap) {
+function showCard(wrap, card) {
   wrap.classList.remove('card-wrap--hidden');
   delete wrap.dataset.hiding;
   wrap.style.cssText = '';
+  card.style.setProperty('--card-i', '0');
+  card.classList.remove('exam-card--entering');
+  void card.offsetWidth;
+  card.classList.add('exam-card--entering');
 }
 
 function hideCard(wrap) {
@@ -226,7 +230,7 @@ function renderCards() {
     const visible = selectedSubjects.includes(card.dataset.examId);
     const hidden  = wrap.classList.contains('card-wrap--hidden');
     const hiding  = !!wrap.dataset.hiding;
-    if (visible && (hidden || hiding)) showCard(wrap);
+    if (visible && (hidden || hiding)) showCard(wrap, card);
     else if (!visible && !hidden && !hiding) hideCard(wrap);
   });
 

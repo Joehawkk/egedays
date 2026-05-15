@@ -157,6 +157,12 @@ h1 {
 .card-wrap:last-child { margin-bottom: 0; }
 .card-wrap--hidden { display: none; }
 
+/* -- card entrance animation -- */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* -- card -- */
 .exam-card {
   background: var(--surface);
@@ -166,6 +172,10 @@ h1 {
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   display: flex; flex-direction: column; gap: clamp(14px,3vw,22px);
+}
+.exam-card--entering {
+  animation: cardIn 0.45s ease both;
+  animation-delay: calc(var(--card-i, 0) * 55ms);
 }
 @media (hover: hover) {
   .exam-card:hover {

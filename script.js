@@ -31,6 +31,7 @@ const TIMEZONES = [
 ];
 
 const MONTHS = ['','янв.','фев.','мар.','апр.','мая','июня','июля','авг.','сен.','окт.','ноя.','дек.'];
+const isReload = performance.getEntriesByType('navigation')[0]?.type === 'reload';
 const YEAR_START = new Date('2025-09-01T00:00:00+03:00').getTime();
 const second = 1000, minute = 60000, hour = 3600000, day = 86400000;
 const fmt = new Intl.NumberFormat('ru-RU');
@@ -278,3 +279,4 @@ renderTzSelect();
 renderPills();
 initCards();
 renderCards();
+document.body.classList.remove('js-loading');

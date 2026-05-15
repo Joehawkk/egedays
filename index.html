@@ -90,6 +90,26 @@
       <section class="exam-grid" id="exam-grid" aria-label="Счетчики до ЕГЭ"></section>
     </main>
 
+    <!-- YouTube hidden player -->
+    <div style="position:fixed;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+      <div id="yt-player"></div>
+    </div>
+
+    <!-- Lofi mini player -->
+    <div class="player" id="player">
+      <div class="player__vis" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="player__info">
+        <p class="player__title">Lofi Radio</p>
+        <p class="player__sub">музыка для учёбы</p>
+      </div>
+      <button class="player__btn" id="player-btn" aria-label="Воспроизвести">
+        <svg class="player__icon player__icon--play" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        <svg class="player__icon player__icon--pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </button>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>

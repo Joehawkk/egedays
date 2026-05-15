@@ -467,6 +467,38 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   setTimeout(() => html.classList.remove('theme-switching'), 400);
 });
 
+// ── Lofi Player ──
+(function () {
+  const VIDEO_ID = 'jfKfPfyJRdk'; // Lofi Girl 24/7
+  const playerEl = document.getElementById('player');
+  const btn      = document.getElementById('player-btn');
+  let yt = null;
+
+  window.onYouTubeIframeAPIReady = function () {
+    yt = new YT.Player('yt-player', {
+      videoId: VIDEO_ID,
+      playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3, modestbranding: 1, rel: 0 },
+      events: {
+        onReady: e  => e.target.setVolume(35),
+        onStateChange: e => {
+          const playing = e.data === YT.PlayerState.PLAYING;
+          playerEl.classList.toggle('player--playing', playing);
+          btn.setAttribute('aria-label', playing ? 'Пауза' : 'Воспроизвести');
+        },
+      },
+    });
+  };
+
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(s);
+
+  btn.addEventListener('click', () => {
+    if (!yt) return;
+    playerEl.classList.contains('player--playing') ? yt.pauseVideo() : yt.playVideo();
+  });
+})();
+
 // ── Init ──
 renderQuote();
 setInterval(renderQuote, 15 * 60 * 1000);

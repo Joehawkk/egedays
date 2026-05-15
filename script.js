@@ -347,6 +347,25 @@ function update() {
   updateMeta();
 }
 
+// ── Theme toggle ──
+let isDark = localStorage.getItem('ege-theme') !== 'light';
+
+function applyTheme() {
+  const light = !isDark;
+  document.documentElement.classList.toggle('light', light);
+  document.querySelector('meta[name="theme-color"]')
+    ?.setAttribute('content', light ? '#ffffff' : '#0d0d18');
+  localStorage.setItem('ege-theme', light ? 'light' : 'dark');
+}
+
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const html = document.documentElement;
+  html.classList.add('theme-switching');
+  isDark = !isDark;
+  applyTheme();
+  setTimeout(() => html.classList.remove('theme-switching'), 400);
+});
+
 // ── Init ──
 renderQuote();
 setInterval(renderQuote, 15 * 60 * 1000);
@@ -354,4 +373,5 @@ renderTzSelect();
 renderPills();
 initCards();
 renderCards();
+applyTheme();
 document.body.classList.remove('js-loading');

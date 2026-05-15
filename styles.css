@@ -234,9 +234,18 @@ html.light .theme-toggle__moon { opacity: 1; transform: rotate(0deg) scale(1); }
   background: var(--surface); border: 1px solid var(--border); border-top: none;
   border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  max-height: 280px; overflow-y: auto; display: none; flex-direction: column;
+  max-height: 280px; overflow-y: auto; display: flex; flex-direction: column;
+  opacity: 0; visibility: hidden;
+  transform: translateY(-8px); transform-origin: top center;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
 }
-.custom-select.open .custom-select__dropdown { display: flex; }
+.custom-select.open .custom-select__dropdown {
+  opacity: 1; visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition: opacity 0.25s cubic-bezier(0.22, 1, 0.36, 1), transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
+}
 .custom-select__dropdown::-webkit-scrollbar { width: 4px; }
 .custom-select__dropdown::-webkit-scrollbar-track { background: transparent; margin: 8px 0; }
 .custom-select__dropdown::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 100px; }
@@ -318,13 +327,12 @@ html.light .theme-toggle__moon { opacity: 1; transform: rotate(0deg) scale(1); }
 .exam-card__badge {
   width: 44px; height: 44px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em;
-  flex-shrink: 0; border: 1px solid; line-height: 1;
+  flex-shrink: 0; border: 1px solid;
   color: var(--card-color);
   background: rgba(var(--card-rgb), 0.1);
   border-color: rgba(var(--card-rgb), 0.2);
 }
-.exam-card__badge--sm { font-size: 0.72rem; }
+.exam-card__badge svg { width: 22px; height: 22px; display: block; flex-shrink: 0; }
 .exam-card__date {
   color: var(--muted); font-size: clamp(0.68rem,1.8vw,0.78rem);
   font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 3px;

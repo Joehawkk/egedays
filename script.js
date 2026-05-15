@@ -1,19 +1,35 @@
 'use strict';
 
+const ICONS = {
+  hourglass: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2h14M5 22h14M6 2v6l3 4-3 4v6M18 2v6l-3 4 3 4v6"/></svg>',
+  book:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  atom:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5z"/></svg>',
+  feather:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>',
+  sqrt:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16h7"/></svg>',
+  sigma:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4H6l6 8-6 8h12"/></svg>',
+  users:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  zap:       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+  leaf:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+  globe:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+  message:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  code:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+  mic:       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+};
+
 const EXAMS_DATA = [
-  { id: 'history',    name: 'История',             date: '2026-06-01', badge: '⏳︎',       color: '#ce93d8', rgb: '206,147,216' },
-  { id: 'literature', name: 'Литература',           date: '2026-06-01', badge: '§',         color: '#f48fb1', rgb: '244,143,177' },
-  { id: 'chemistry',  name: 'Химия',                date: '2026-06-01', badge: '⚛',         color: '#80cbc4', rgb: '128,203,196' },
-  { id: 'ru',         name: 'Русский язык',         date: '2026-06-04', badge: 'Ъ',         color: '#ff6b8a', rgb: '255,107,138' },
-  { id: 'math-base',  name: 'Математика (баз.)',    date: '2026-06-08', badge: '√',         color: '#81d4fa', rgb: '129,212,250' },
-  { id: 'math-prof',  name: 'Математика (проф.)',   date: '2026-06-08', badge: '∑',         color: '#4fc3f7', rgb: '79,195,247'  },
-  { id: 'social',     name: 'Обществознание',       date: '2026-06-11', badge: '🕮',        color: '#ffd54f', rgb: '255,213,79'  },
-  { id: 'physics',    name: 'Физика',               date: '2026-06-11', badge: 'Ω',         color: '#ffb74d', rgb: '255,183,77'  },
-  { id: 'biology',    name: 'Биология',             date: '2026-06-15', badge: '☣',         color: '#a5d6a7', rgb: '165,214,167' },
-  { id: 'geography',  name: 'География',            date: '2026-06-15', badge: '🗺',        color: '#80deea', rgb: '128,222,234' },
-  { id: 'foreign-wr', name: 'Ин. языки (письм.)',  date: '2026-06-15', badge: '🗛',        color: '#ffab91', rgb: '255,171,145' },
-  { id: 'cs',         name: 'Информатика',          date: '2026-06-18', badge: '&lt;/&gt;', color: '#69f0ae', rgb: '105,240,174' },
-  { id: 'foreign-or', name: 'Ин. языки (устн.)',   date: '2026-06-19', badge: '🗛',        color: '#ff8a65', rgb: '255,138,101' },
+  { id: 'history',    name: 'История',             date: '2026-06-01', badge: ICONS.hourglass, color: '#ce93d8', rgb: '206,147,216' },
+  { id: 'literature', name: 'Литература',           date: '2026-06-01', badge: ICONS.book,      color: '#f48fb1', rgb: '244,143,177' },
+  { id: 'chemistry',  name: 'Химия',                date: '2026-06-01', badge: ICONS.atom,      color: '#80cbc4', rgb: '128,203,196' },
+  { id: 'ru',         name: 'Русский язык',         date: '2026-06-04', badge: ICONS.feather,   color: '#ff6b8a', rgb: '255,107,138' },
+  { id: 'math-base',  name: 'Математика (баз.)',    date: '2026-06-08', badge: ICONS.sqrt,      color: '#81d4fa', rgb: '129,212,250' },
+  { id: 'math-prof',  name: 'Математика (проф.)',   date: '2026-06-08', badge: ICONS.sigma,     color: '#4fc3f7', rgb: '79,195,247'  },
+  { id: 'social',     name: 'Обществознание',       date: '2026-06-11', badge: ICONS.users,     color: '#ffd54f', rgb: '255,213,79'  },
+  { id: 'physics',    name: 'Физика',               date: '2026-06-11', badge: ICONS.zap,       color: '#ffb74d', rgb: '255,183,77'  },
+  { id: 'biology',    name: 'Биология',             date: '2026-06-15', badge: ICONS.leaf,      color: '#a5d6a7', rgb: '165,214,167' },
+  { id: 'geography',  name: 'География',            date: '2026-06-15', badge: ICONS.globe,     color: '#80deea', rgb: '128,222,234' },
+  { id: 'foreign-wr', name: 'Ин. языки (письм.)',  date: '2026-06-15', badge: ICONS.message,   color: '#ffab91', rgb: '255,171,145' },
+  { id: 'cs',         name: 'Информатика',          date: '2026-06-18', badge: ICONS.code,      color: '#69f0ae', rgb: '105,240,174' },
+  { id: 'foreign-or', name: 'Ин. языки (устн.)',   date: '2026-06-19', badge: ICONS.mic,       color: '#ff8a65', rgb: '255,138,101' },
 ];
 
 const TIMEZONES = [
@@ -160,7 +176,6 @@ function initCards() {
     const mv = fmt.format(Math.floor((dist % hour) / minute));
     const sv = fmt.format(Math.floor((dist % minute) / second));
     const pct = Math.min(100, Math.max(0, (now - YEAR_START) / (targetTime - YEAR_START) * 100));
-    const sm = e.badge.length > 1 ? ' exam-card__badge--sm' : '';
     const hidden = !selectedSubjects.includes(e.id);
     return `
     <div class="card-wrap${hidden ? ' card-wrap--hidden' : ''}">
@@ -168,7 +183,7 @@ function initCards() {
       style="--card-color:${e.color};--card-rgb:${e.rgb};--card-i:${i}">
       <div class="exam-card__header">
         <div class="exam-card__accent"></div>
-        <div class="exam-card__badge${sm}">${e.badge}</div>
+        <div class="exam-card__badge">${e.badge}</div>
         <div class="exam-card__meta">
           <p class="exam-card__date">${dateLabel} · 10:00</p>
           <h2>${e.name}</h2>

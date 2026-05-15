@@ -30,6 +30,25 @@ const TIMEZONES = [
   { offset: 12, label: 'Камчатка, Чукотка (UTC+12)'      },
 ];
 
+const QUOTES = [
+  { text: 'Боль временна. Сдаться — навсегда.',                                                        author: 'Лэнс Армстронг'    },
+  { text: 'Тяжело в учении — легко в бою.',                                                            author: 'Александр Суворов' },
+  { text: 'Чемпион — это тот, кто встал на один раз больше, чем упал.',                               author: 'Мухаммед Али'      },
+  { text: 'Никто не говорил, что будет легко. Но оно того стоит.',                                     author: 'Народная мудрость' },
+  { text: 'Ты не устал — ты просто ещё не дошёл.',                                                    author: 'Народная мудрость' },
+  { text: 'Разница между возможным и невозможным — в твоём желании.',                                  author: 'Томми Ласорда'     },
+  { text: 'Один день — один шаг. Не останавливайся.',                                                  author: 'Народная мудрость' },
+  { text: 'Успех — это идти от провала к провалу, не теряя энтузиазма.',                               author: 'Уинстон Черчилль'  },
+  { text: 'Либо ты управляешь своим днём, либо день управляет тобой.',                                 author: 'Джим Рон'          },
+  { text: 'Сделай сегодня то, что другие не хотят, — завтра ты будешь жить так, как другие не могут.', author: 'Джаред Лето'       },
+  { text: 'Не жди. Времени никогда не будет достаточно.',                                              author: 'Наполеон Хилл'    },
+  { text: 'Победители находят способ. Проигравшие — причину.',                                         author: 'Народная мудрость' },
+  { text: 'Каждое утро ты получаешь 86 400 секунд. Используй их.',                                     author: 'Народная мудрость' },
+  { text: 'Страх — это реакция. Смелость — это решение.',                                              author: 'Уинстон Черчилль'  },
+  { text: 'Твои ограничения существуют только в твоей голове.',                                        author: 'Народная мудрость' },
+  { text: 'Делай пока другие объясняют почему это невозможно.',                                        author: 'Народная мудрость' },
+];
+
 const MONTHS = ['','янв.','фев.','мар.','апр.','мая','июня','июля','авг.','сен.','окт.','ноя.','дек.'];
 const isReload = performance.getEntriesByType('navigation')[0]?.type === 'reload';
 const YEAR_START = new Date('2025-09-01T00:00:00+03:00').getTime();
@@ -40,6 +59,16 @@ let selectedTz       = parseInt(localStorage.getItem('ege-tz') ?? '3');
 let selectedSubjects = JSON.parse(localStorage.getItem('ege-subjects') ?? '["ru","math-prof","physics","cs"]');
 let activeExams = [];
 let tickInterval = null;
+
+// ── Quote rotator ──
+function renderQuote() {
+  const slot = Math.floor(Date.now() / (15 * 60 * 1000));
+  const q    = QUOTES[slot % QUOTES.length];
+  const el = document.getElementById('quote');
+  if (!el) return;
+  el.querySelector('.quote__text').textContent   = '«' + q.text + '»';
+  el.querySelector('.quote__author').textContent = '— ' + q.author;
+}
 
 function saveState() {
   localStorage.setItem('ege-tz', selectedTz);
@@ -124,6 +153,7 @@ function initCards() {
     const dateLabel  = `${parseInt(d)} ${MONTHS[parseInt(m)]}`;
     const target     = makeTarget(e.date);
     const targetTime = new Date(target).getTime();
+    const expired    = targetTime < now;
     const dist = Math.max(0, targetTime - now);
     const dv = fmt.format(Math.floor(dist / day));
     const hv = fmt.format(Math.floor((dist % day) / hour));
@@ -134,7 +164,7 @@ function initCards() {
     const hidden = !selectedSubjects.includes(e.id);
     return `
     <div class="card-wrap${hidden ? ' card-wrap--hidden' : ''}">
-    <article class="exam-card${isReload ? '' : ' exam-card--entering'}" data-exam-card data-exam-id="${e.id}"
+    <article class="exam-card${isReload ? '' : ' exam-card--entering'}${expired ? ' exam-card--expired' : ''}" data-exam-card data-exam-id="${e.id}"
       style="--card-color:${e.color};--card-rgb:${e.rgb};--card-i:${i}">
       <div class="exam-card__header">
         <div class="exam-card__accent"></div>
@@ -144,7 +174,9 @@ function initCards() {
           <h2>${e.name}</h2>
         </div>
       </div>
-      <div class="countdown" data-target="${target}">
+      ${expired
+        ? `<p class="exam-card__expired-msg">Экзамен уже завершился</p>`
+        : `<div class="countdown" data-target="${target}">
         <div class="countdown__block"><span data-unit="days">${dv}</span><span class="countdown__label">дней</span></div>
         <span class="countdown__sep">:</span>
         <div class="countdown__block"><span data-unit="hours">${hv}</span><span class="countdown__label">часов</span></div>
@@ -156,7 +188,7 @@ function initCards() {
       <div class="progress-wrap">
         <div class="progress-bar"><div class="progress-bar__fill" data-progress style="width:${pct.toFixed(1)}%"></div></div>
         <span class="progress-label" data-progress-label>${pct.toFixed(0)}%</span>
-      </div>
+      </div>`}
     </article>
     </div>`;
   }).join('');
@@ -166,7 +198,9 @@ function rebuildActiveExams() {
   activeExams = [...document.querySelectorAll('[data-exam-card]')]
     .filter(card => {
       const wrap = card.parentElement;
-      return !wrap.classList.contains('card-wrap--hidden') && !wrap.dataset.hiding;
+      return !wrap.classList.contains('card-wrap--hidden') &&
+             !wrap.dataset.hiding &&
+             !card.classList.contains('exam-card--expired');
     })
     .map(card => {
       const timer = card.querySelector('[data-target]');
@@ -264,8 +298,22 @@ function setText(el, value) {
 
 function update() {
   const now = Date.now();
+  let anyExpired = false;
   activeExams.forEach(exam => {
-    const dist = Math.max(0, exam.targetTime - now);
+    const dist = exam.targetTime - now;
+    if (dist <= 0) {
+      exam.card.classList.add('exam-card--expired');
+      exam.card.querySelector('.countdown')?.remove();
+      exam.card.querySelector('.progress-wrap')?.remove();
+      if (!exam.card.querySelector('.exam-card__expired-msg')) {
+        const msg = document.createElement('p');
+        msg.className = 'exam-card__expired-msg';
+        msg.textContent = 'Экзамен уже завершился';
+        exam.card.appendChild(msg);
+      }
+      anyExpired = true;
+      return;
+    }
     setText(exam.days,    Math.floor(dist / day));
     setText(exam.hours,   Math.floor((dist % day) / hour));
     setText(exam.minutes, Math.floor((dist % hour) / minute));
@@ -276,9 +324,12 @@ function update() {
       if (exam.progressLabel) exam.progressLabel.textContent = pct.toFixed(0) + '%';
     }
   });
+  if (anyExpired) activeExams = activeExams.filter(e => !e.card.classList.contains('exam-card--expired'));
 }
 
 // ── Init ──
+renderQuote();
+setInterval(renderQuote, 15 * 60 * 1000);
 renderTzSelect();
 renderPills();
 initCards();

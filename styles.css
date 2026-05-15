@@ -83,6 +83,24 @@ h1 {
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
+/* -- quote -- */
+.quote {
+  margin-bottom: clamp(12px, 2dvh, 36px);
+  padding: 14px 18px;
+  border-left: 2px solid rgba(255,255,255,0.12);
+}
+.quote__text {
+  font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+  font-style: italic;
+  color: rgba(240,240,248,0.55);
+  line-height: 1.6;
+}
+.quote__author {
+  margin-top: 5px;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--muted); opacity: 0.7;
+}
+
 /* -- settings -- */
 .settings {
   margin-bottom: clamp(12px,2dvh,40px);
@@ -183,6 +201,13 @@ h1 {
     box-shadow: 0 24px 60px rgba(var(--card-rgb), 0.15);
     border-color: rgba(var(--card-rgb), 0.25);
   }
+}
+
+/* -- expired -- */
+.exam-card--expired { opacity: 0.45; }
+.exam-card__expired-msg {
+  font-size: clamp(0.78rem,2vw,0.88rem);
+  font-style: italic; color: var(--muted); padding: 2px 0;
 }
 
 /* -- card header -- */

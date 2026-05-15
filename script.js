@@ -16,20 +16,90 @@ const EXAMS_DATA = [
   { id: 'foreign-or', name: 'Ин. языки (устн.)',   date: '2026-06-19', badge: '🗛',        color: '#ff8a65', rgb: '255,138,101' },
 ];
 
+const TIMEZONES = [
+  { offset: 2,  label: 'Калининград (UTC+2)'             },
+  { offset: 3,  label: 'Москва, Санкт-Петербург (UTC+3)' },
+  { offset: 4,  label: 'Самара, Удмуртия (UTC+4)'        },
+  { offset: 5,  label: 'Екатеринбург (UTC+5)'            },
+  { offset: 6,  label: 'Омск (UTC+6)'                    },
+  { offset: 7,  label: 'Красноярск, Новосибирск (UTC+7)' },
+  { offset: 8,  label: 'Иркутск (UTC+8)'                 },
+  { offset: 9,  label: 'Якутск (UTC+9)'                  },
+  { offset: 10, label: 'Владивосток, Хабаровск (UTC+10)' },
+  { offset: 11, label: 'Магадан, Сахалин (UTC+11)'       },
+  { offset: 12, label: 'Камчатка, Чукотка (UTC+12)'      },
+];
+
 const MONTHS = ['','янв.','фев.','мар.','апр.','мая','июня','июля','авг.','сен.','окт.','ноя.','дек.'];
 const YEAR_START = new Date('2025-09-01T00:00:00+03:00').getTime();
 const second = 1000, minute = 60000, hour = 3600000, day = 86400000;
 const fmt = new Intl.NumberFormat('ru-RU');
 
+let selectedTz = parseInt(localStorage.getItem('ege-tz') ?? '3');
 let activeExams = [];
+let tickInterval = null;
 
+function saveState() {
+  localStorage.setItem('ege-tz', selectedTz);
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function makeTarget(date) {
+  return `${date}T10:00:00+${pad(selectedTz)}:00`;
+}
+
+// ── Timezone custom dropdown ──
+function renderTzSelect() {
+  const wrap = document.getElementById('tz-select');
+  const current = TIMEZONES.find(t => t.offset === selectedTz) || TIMEZONES[1];
+
+  wrap.innerHTML = `
+    <button class="custom-select__trigger" id="tz-trigger" type="button">
+      <span id="tz-value">${current.label}</span>
+      <svg class="custom-select__arrow" width="12" height="7" viewBox="0 0 12 7" fill="none">
+        <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="custom-select__dropdown" id="tz-dropdown">
+      ${TIMEZONES.map(tz => `
+        <button class="custom-select__option${tz.offset === selectedTz ? ' selected' : ''}"
+          data-offset="${tz.offset}" type="button">${tz.label}</button>
+      `).join('')}
+    </div>`;
+
+  const trigger  = wrap.querySelector('#tz-trigger');
+  const dropdown = wrap.querySelector('#tz-dropdown');
+  const valEl    = wrap.querySelector('#tz-value');
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    wrap.classList.toggle('open');
+  });
+
+  dropdown.querySelectorAll('.custom-select__option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedTz = parseInt(btn.dataset.offset);
+      valEl.textContent = btn.textContent;
+      dropdown.querySelectorAll('.custom-select__option').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      wrap.classList.remove('open');
+      saveState();
+      renderCards();
+    });
+  });
+
+  document.addEventListener('click', () => wrap.classList.remove('open'));
+}
+
+// ── Exam cards ──
 function initCards() {
   const now  = Date.now();
   const grid = document.getElementById('exam-grid');
   grid.innerHTML = EXAMS_DATA.map(e => {
     const [, m, d] = e.date.split('-');
     const dateLabel  = `${parseInt(d)} ${MONTHS[parseInt(m)]}`;
-    const target     = `${e.date}T10:00:00+03:00`;
+    const target     = makeTarget(e.date);
     const targetTime = new Date(target).getTime();
     const dist = Math.max(0, targetTime - now);
     const dv = fmt.format(Math.floor(dist / day));
@@ -82,6 +152,21 @@ function rebuildActiveExams() {
   });
 }
 
+function renderCards() {
+  // Update targets when timezone changes
+  EXAMS_DATA.forEach(e => {
+    const card  = document.querySelector(`[data-exam-id="${e.id}"]`);
+    if (!card) return;
+    const timer = card.querySelector('[data-target]');
+    if (timer) timer.dataset.target = makeTarget(e.date);
+  });
+  rebuildActiveExams();
+  if (!tickInterval) {
+    update();
+    tickInterval = setInterval(update, 1000);
+  }
+}
+
 function setText(el, value) {
   const next = fmt.format(Math.max(0, value));
   if (el.textContent !== next) {
@@ -110,7 +195,7 @@ function update() {
   });
 }
 
+// ── Init ──
+renderTzSelect();
 initCards();
-rebuildActiveExams();
-update();
-setInterval(update, 1000);
+renderCards();

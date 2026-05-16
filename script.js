@@ -472,6 +472,7 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   const VIDEO_ID = 'jfKfPfyJRdk'; // Lofi Girl 24/7
   const playerEl = document.getElementById('player');
   const btn      = document.getElementById('player-btn');
+  const subEl    = playerEl.querySelector('.player__sub');
   let yt = null;
 
   window.onYouTubeIframeAPIReady = function () {
@@ -484,6 +485,11 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
           const playing = e.data === YT.PlayerState.PLAYING;
           playerEl.classList.toggle('player--playing', playing);
           btn.setAttribute('aria-label', playing ? 'Пауза' : 'Воспроизвести');
+          subEl.classList.add('player__sub--fade');
+          setTimeout(() => {
+            subEl.textContent = playing ? 'музыка для учёбы' : 'нужен VPN';
+            subEl.classList.remove('player__sub--fade');
+          }, 250);
         },
       },
     });
